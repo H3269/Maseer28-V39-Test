@@ -67,6 +67,35 @@ button{border-radius:13px;box-shadow:0 3px 0 #164f5822,0 7px 16px #164f5810;tran
 .floatingProfileBack{background:linear-gradient(135deg,#164f58,#176f70);box-shadow:0 8px 22px #164f5830}
 
 @media (max-width:420px){.app{padding-left:11px;padding-right:11px}.card{padding:16px;border-radius:18px}.severityWrap{margin-top:42px}select{height:38px;min-height:38px;font-size:11.5px;padding-left:31px;padding-right:32px}}
+
+/* V54 FINAL VISUAL POLISH — calm unified palette + filled 0–10 controls */
+:root{--primary:#2f7069;--primary2:#579b90;--accent:#9bcfc3;--accent2:#e5f3ef;--navy:#28555b;--navy2:#356f73;--gold:#d6b56b;--gold2:#f1dfb0;--bg:#f4f9f7;--card:#ffffff;--text:#294443;--muted:#708682;--line:#dbeae6;--ok:#4b8d6b;--okbg:#eaf6ef;--warn:#9a7440;--warnbg:#fff8e8;--danger:#b85c58}
+body{background:radial-gradient(circle at 8% 0%,#eaf6f2 0,#f4f9f7 38%,#f8faf9 100%);color:var(--text)}
+.header{background:linear-gradient(145deg,#2d7069 0%,#356f73 55%,#3e6672 100%);box-shadow:0 12px 34px #28555b20}
+.progress{background:#ffffff30}.bar{background:linear-gradient(90deg,#9bcfc3,#c9ddaa,#ead58f);box-shadow:0 0 8px #ffffff22}
+.card{border-color:#dfebe8;box-shadow:0 7px 24px #28555b0d}
+input,textarea,select{border-color:#d5e4e1;background:linear-gradient(#fff,#fbfefd)}
+input:focus,textarea:focus,select:focus{border-color:#579b90;box-shadow:0 0 0 3px #579b9016,0 3px 10px #28555b08}
+button{box-shadow:0 3px 0 #28555b20,0 7px 16px #28555b0c}
+.primary{background:linear-gradient(135deg,#2f7069,#579b90)}
+.secondary{background:linear-gradient(135deg,#f0f5f3,#e7f0ed);color:#28555b}
+.gold{background:linear-gradient(135deg,#f5f6e9,#e9f1df);color:#526a4d}
+.success{background:linear-gradient(135deg,#eaf6ef,#e1f1e8)}
+.exercise{background:linear-gradient(135deg,#eef9f6,#f7fbfa);border-right-color:#579b90}
+.action{background:linear-gradient(135deg,#f5f1fa,#faf7fc);border-right-color:#8d78aa}
+.feedback{background:linear-gradient(135deg,#f1f7fa,#f7fafb);border-right-color:#7199a8}
+.recommendation{background:linear-gradient(135deg,#f5f3fa,#faf8fc);border-right-color:#8d78aa}
+.alert{background:#fff8e8;border-color:#eee0bb;color:#86663c}
+/* Filled continuous slider: left=red, middle=yellow, right=green */
+.severityWrap{height:8px;margin:43px 1px 10px;border:1px solid #ffffffb8;background:#e5eeeb;box-shadow:inset 0 1px 3px #28555b18,0 2px 7px #28555b0b;overflow:visible}
+.severityWrap::before{content:"";position:absolute;left:0;top:0;height:100%;width:var(--fill,0%);border-radius:99px;background:linear-gradient(90deg,#d85f59 0%,#e3a34e 38%,#e4c95a 55%,#88bb6d 76%,#5b9e68 100%);box-shadow:0 1px 3px #28555b12;transition:width .16s ease}
+.severityRange{inset:-11px 0 0;height:29px;direction:ltr}
+.severityThumb{width:17px;height:17px;border:2px solid #28555b;background:#fff;box-shadow:0 2px 7px #28555b30,0 0 0 3px #ffffffc2;transition:left .16s ease}
+.severityValue{top:-36px;background:linear-gradient(135deg,#28555b,#356f73);border:1px solid #ffffff35;border-radius:8px;padding:3px 7px;min-width:43px;text-align:center;box-shadow:0 4px 10px #28555b20;font-size:10px}
+.smartSelectMenu,.bookTocPanel,.validationCard,.copyrightCard,.bookPreviewCard{box-shadow:0 18px 45px #28555b25}
+.smartSelectOption:hover,.smartSelectOption.selected{background:#f5f1df;border-color:#e6d8ae;color:#28555b}
+.floatingProfileBack{background:linear-gradient(135deg,#28555b,#356f73);box-shadow:0 8px 22px #28555b2c}
+.bookPage{background:#fffdf8;border-color:#e7dfd2;box-shadow:0 10px 24px #28555b0d}
 </style>
 </head>
 <body>
@@ -228,8 +257,8 @@ function collectCountFields(prefix,count=3){const out=[];for(let i=1;i<=count;i+
 function initFinalFields(){["f1","f2","f3"].forEach(p=>{const c=$(p+"Count");makeCountFields(p,Number(c?.value||3));c?.addEventListener("change",()=>makeCountFields(p,Number(c.value||3)))})}
 function makeActionExample(action,title){const a=String(action||"").trim();const t=String(title||"موضوع امروز").trim();if(!a)return`امروز در یک موقعیت واقعی مرتبط با «${t}»، یک کار کوچک و مشخص انتخاب کن، انجامش بده و نتیجه را ثبت کن.`;return`در «${t}»، یک موقعیت واقعی و امن از امروز را انتخاب کن؛ مثلاً همان موقعیتی که این اقدام برایت معنا دارد. آن موقعیت را مشخص کن، «${a}» را همان‌جا اجرا کن و بعد نتیجه را در پاسخ امروزت بنویس.`}
 function splitDayContent(d){const raw=String(d?.exercise||"");const mark="اقدام اختصاصی امروز:";const method="روش اختصاصی این مسئله:";let exercise=String(d?.exerciseText||"").trim();if(!exercise&&raw){exercise=raw.includes(mark)?raw.split(mark)[0].trim():raw.split(method)[0].trim()}const title=String(d?.title||"موضوع امروز").split("·")[0].trim();const action=makeActionExample(String(d?.actionText||""),title).replace(/^مثال عینی\s*:\s*/i,"").trim();return{exercise,action}}
-function updateScoreBar(id,v){const n=Math.max(0,Math.min(10,Number(normalizeDigits(v))||0));const th=$(id+"Thumb"),val=$(id+"Value"),el=$(id);if(th)th.style.left=(n*10)+"%";if(val)val.textContent=el?.dataset.touched==="1"?fa(n)+" از ۱۰":"انتخاب نشده";return n}
-function updateSeverity(v){const n=updateScoreBar("severity",v);const th=$("severityThumb"),val=$("severityValue"),el=$("dayScore");if(th)th.style.left=(n*10)+"%";if(val)val.textContent=el?.dataset.touched==="1"?fa(n)+" از ۱۰":"انتخاب نشده";$("severityText").textContent=n<=2?"۰ تا ۲ = بسیار کم یا تقریباً بدون درگیری":n<=4?"۳ تا ۴ = خفیف":n<=6?"۵ تا ۶ = متوسط":n<=8?"۷ تا ۸ = زیاد":"۹ تا ۱۰ = بسیار شدید و درگیرکننده";return n}
+function updateScoreBar(id,v){const n=Math.max(0,Math.min(10,Number(normalizeDigits(v))||0));const th=$(id+"Thumb"),val=$(id+"Value"),el=$(id),wrap=el?.closest(".severityWrap");const pos=Math.min(96,Math.max(4,n*10));if(th)th.style.left=(n*10)+"%";if(val){val.style.left=pos+"%";val.textContent=el?.dataset.touched==="1"?fa(n)+" از ۱۰":"انتخاب نشده"}if(wrap)wrap.style.setProperty("--fill",(n*10)+"%");return n}
+function updateSeverity(v){const n=updateScoreBar("dayScore",v);const el=$("dayScore");if($("severityText"))$("severityText").textContent=n<=2?"۰ تا ۲ = بسیار کم یا تقریباً بدون درگیری":n<=4?"۳ تا ۴ = خفیف":n<=6?"۵ تا ۶ = متوسط":n<=8?"۷ تا ۸ = زیاد":"۹ تا ۱۰ = بسیار شدید و درگیرکننده";return n}
 function nextRequiredDay(s){for(let i=1;i<=28;i++)if(!s.completed.includes(i))return i;return 29}
 function update(active=null){const s=state();const n=active==null?s.completed.length:Math.max(0,Math.min(28,Number(active)));const pct=Math.round(n/28*100);$("bar").style.width=pct+"%";$("progressText").textContent=`روز ${fa(n)} از ۲۸`;$('percent').textContent=fa(pct)+"٪"}
 function populateProblems(){const sel=$("pProblem");if(!sel||!content)return;sel.innerHTML='<option value="">انتخاب کنید</option>'+Object.keys(content.categories).map(x=>`<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");refreshSmartSelect(sel)}
